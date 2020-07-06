@@ -73,7 +73,9 @@ public class BatteryWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
 
 
-        percent = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,55);
+        //intent.putExtra(Intent.ACTION_BATTERY_CHANGED);
+
+        percent = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,0);
 
         //broadcastReceiver.onReceive(context,intent);
 
