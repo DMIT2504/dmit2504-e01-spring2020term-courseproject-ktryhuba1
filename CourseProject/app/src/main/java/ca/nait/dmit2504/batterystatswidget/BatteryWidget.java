@@ -24,8 +24,9 @@ public class BatteryWidget extends AppWidgetProvider {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            //intent.setAction(Intent.ACTION_BATTERY_CHANGED);
 
-            percent = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
+            percent = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,20);
 
 
         }
@@ -36,20 +37,21 @@ public class BatteryWidget extends AppWidgetProvider {
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
 
+
+
         batterystats = new IntentFilter();
         batterystats.addAction(Intent.ACTION_BATTERY_CHANGED);
+        //context.getApplicationContext().registerReceiver(broadcastReceiver,batterystats);
 
-        context.getApplicationContext().registerReceiver(broadcastReceiver,batterystats);
-
-        Intent intent =  new Intent(context, BatteryManager.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        //Intent intent =  new Intent(context, BatteryManager.class);
+        //intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
 
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.battery_widget);
 
-        views.setProgressBar(R.id.progress_bar_charged_percentage,100,50,false);
-        views.setTextViewText(R.id.percent_textview,percent + "SHOW THIS");
+        views.setProgressBar(R.id.progress_bar_charged_percentage,100,percent,false);
+        views.setTextViewText(R.id.percent_textview,percent + "%");
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -57,6 +59,7 @@ public class BatteryWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context,appWidgetManager,appWidgetIds);
         // There may be multiple widgets active, so update all of them
         ComponentName thisWidget = new ComponentName(context,BatteryWidget.class);
         int[] widgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
@@ -70,7 +73,9 @@ public class BatteryWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
 
 
-        broadcastReceiver.onReceive(context,intent);
+        percent = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,55);
+
+        //broadcastReceiver.onReceive(context,intent);
 
         super.onReceive(context, intent);
     }
