@@ -1,0 +1,143 @@
+package ca.nait.dmit2504.batterywidgetanddatabase;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.os.BatteryManager;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    ListView list;
+
+    SimpleCursorAdapter cursorAdapter;
+
+    saved_stats database;
+
+    TextView status;
+    TextView health;
+    TextView percent;
+    TextView voltage;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        status = findViewById(R.id.status_text);
+        health = findViewById(R.id.health_text);
+        percent = findViewById(R.id.percent_text);
+        voltage = findViewById(R.id.voltage_text);
+
+
+        IntentFilter ifilter = new IntentFilter();
+        ifilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+
+        Intent batteryStats = registerReceiver(null,ifilter);
+        assert batteryStats != null;
+        int mPercent = batteryStats.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
+        int mVoltage = batteryStats.getIntExtra(BatteryManager.EXTRA_VOLTAGE,0);
+        int statusindex = batteryStats.getIntExtra(BatteryManager.EXTRA_STATUS,0);
+        int healthindex = batteryStats.getIntExtra(BatteryManager.EXTRA_HEALTH,0);
+
+        String mStatus = "";
+        String mHealth = "";
+
+
+        switch(statusindex){
+            case 1:
+                mStatus = "Unknown";
+                break;
+            case 2:
+                mStatus = "Charging";
+                break;
+            case 3:
+                mStatus = "Discharging";
+                break;
+            case 4:
+                mStatus = "Not Charging";
+                break;
+            case 5:
+                mStatus = "Full";
+                break;
+            default:
+                break;
+
+        }
+
+        switch(healthindex){
+            case 1:
+                mHealth = "Unknown";
+                break;
+            case 2:
+                mHealth = "Good";
+                break;
+            case 3:
+                mHealth = "OverHeating";
+                break;
+            case 4:
+                mHealth = "Dead";
+                break;
+            case 5:
+                mHealth = "Over Voltage";
+                break;
+            case 6:
+                mHealth = "Unknown Failure";
+                break;
+            case 7:
+                mHealth = "Cold";
+                break;
+            default:
+                break;
+
+        }
+
+        status.setText(mStatus);
+        health.setText(mHealth);
+        voltage.setText(String.valueOf(mVoltage));
+        percent.setText(String.valueOf(mPercent));
+
+
+        list = findViewById(R.id.history_stats_list);
+
+        database = new saved_stats(this);
+
+        Cursor cursor = database.query();
+
+        String[] fromFields = {"Health" , "Status","Percent","Date"};
+        int[] toviews = new int[]{R.id.textView_health,R.id.textView_status,R.id.textView_voltage,R.id.textView_date};
+
+        cursorAdapter = new SimpleCursorAdapter(this,R.layout.custom_listview,cursor,fromFields,toviews);
+
+        list.setAdapter(cursorAdapter);
+
+
+    }
+
+    public void SaveNew(View view)
+    {
+
+
+        String mstatus = status.getText().toString();
+        String mhealth = health.getText().toString();
+        String mvolts = voltage.getText().toString();
+
+        database.SaveNewData(mstatus,mvolts,mhealth);
+
+
+    }
+
+
+
+
+
+}
