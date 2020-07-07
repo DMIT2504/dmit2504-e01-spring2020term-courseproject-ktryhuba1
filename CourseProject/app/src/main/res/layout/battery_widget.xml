@@ -1,27 +1,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
-    android:padding="@dimen/widget_margin"
-    >
+    android:background="#6A5F6E8E"
+    android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/status_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/percent_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/status_textview"
+        android:layout_alignParentStart="true"
+        android:text=""
         android:textColor="@color/colorPrimaryDark"
-        android:text="This text should be overwritten on line 53 in BatteryWidget.java "
         android:textSize="24sp" />
 
     <ProgressBar
         android:id="@+id/progress_bar_charged_percentage"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/percent_textview"
         android:layout_centerHorizontal="true"
         android:max="100"
-        android:paddingTop="20dp"
         android:progressBackgroundTint="#6FCAC5"
-
         android:progressTint="@color/progress_bar_color" />
+
+    <TextView
+        android:id="@+id/voltage_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progress_bar_charged_percentage"
+        android:layout_alignParentStart="true"
+        android:text=""
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/health_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/voltage_textview"
+        android:layout_alignParentStart="true"
+        android:text=""
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
+
 </RelativeLayout>
