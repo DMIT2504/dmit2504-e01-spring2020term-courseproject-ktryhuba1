@@ -46,7 +46,7 @@ public class saved_stats extends SQLiteOpenHelper {
     public long SaveNewData(String status, String voltage,String health){
 
         Date currentdate = Calendar.getInstance().getTime();
-        String now = currentdate.toString();
+        String now = currentdate.toLocaleString();
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

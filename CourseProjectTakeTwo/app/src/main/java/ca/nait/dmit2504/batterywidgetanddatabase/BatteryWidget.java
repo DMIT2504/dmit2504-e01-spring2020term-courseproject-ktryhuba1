@@ -101,7 +101,7 @@ public class BatteryWidget extends AppWidgetProvider {
         Intent mainIntent = new Intent(context,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,mainIntent,0);
 
-        views.setOnClickPendingIntent(R.id.save_button,pendingIntent);
+        views.setOnClickPendingIntent(R.id.button_details,pendingIntent);
 
 
         // Instruct the widget manager to update the widget

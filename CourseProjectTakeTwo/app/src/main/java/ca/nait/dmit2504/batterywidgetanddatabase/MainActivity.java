@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     TextView percent;
     TextView voltage;
 
+    String mStatus = "";
+    String mHealth = "";
+    int mVoltage;
+    int mPercent;
 
 
     @Override
@@ -44,13 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         Intent batteryStats = registerReceiver(null,ifilter);
         assert batteryStats != null;
-        int mPercent = batteryStats.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
-        int mVoltage = batteryStats.getIntExtra(BatteryManager.EXTRA_VOLTAGE,0);
+        mPercent = batteryStats.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
+        mVoltage = batteryStats.getIntExtra(BatteryManager.EXTRA_VOLTAGE,0);
         int statusindex = batteryStats.getIntExtra(BatteryManager.EXTRA_STATUS,0);
         int healthindex = batteryStats.getIntExtra(BatteryManager.EXTRA_HEALTH,0);
 
-        String mStatus = "";
-        String mHealth = "";
+
 
 
         switch(statusindex){
@@ -101,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        status.setText(mStatus);
-        health.setText(mHealth);
-        voltage.setText(String.valueOf(mVoltage));
-        percent.setText(String.valueOf(mPercent));
+        status.setText( "Status: "+mStatus);
+        health.setText("Health: "+mHealth);
+        voltage.setText("Voltage:"+mVoltage+"v");
+        percent.setText("Life: "+mPercent+"%");
 
 
         list = findViewById(R.id.history_stats_list);
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         Cursor cursor = database.query();
 
-        String[] fromFields = {"Health" , "Status","Percent","Date"};
+        String[] fromFields = {"Health" , "Status","Voltage","Date"};
         int[] toviews = new int[]{R.id.textView_health,R.id.textView_status,R.id.textView_voltage,R.id.textView_date};
 
         cursorAdapter = new SimpleCursorAdapter(this,R.layout.custom_listview,cursor,fromFields,toviews);
@@ -127,9 +130,9 @@ public class MainActivity extends AppCompatActivity {
     {
 
 
-        String mstatus = status.getText().toString();
-        String mhealth = health.getText().toString();
-        String mvolts = voltage.getText().toString();
+        String mstatus = mStatus;
+        String mhealth = mHealth;
+        String mvolts = String.valueOf(mVoltage);
 
         database.SaveNewData(mstatus,mvolts,mhealth);
 
