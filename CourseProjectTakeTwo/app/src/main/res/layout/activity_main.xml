@@ -7,10 +7,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <Switch
+        android:id="@+id/auto_save_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Turn on AutoSave?" />
 
     <TextView
         android:id="@+id/percent_text"
